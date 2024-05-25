@@ -7,7 +7,6 @@ const { GraphQLObjectType, GraphQLSchema, GraphQLList, GraphQLID, GraphQLInt, Gr
 const { graphqlHTTP } = require("express-graphql")
  
 
-
 app.use("/test", async (req, res) => {
     res.json({status:true , message:"app is running perfect"})
 })
