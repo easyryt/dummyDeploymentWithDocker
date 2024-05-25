@@ -21,7 +21,7 @@ jobs:
         run: docker build -t easyryt/dummydeploymentwithdocker .
 
       - name: Publish image to Docker Hub
-        run: docker push easyryt/dummydeploymentwithdocker:latest
+        run: docker push easyrytdev/dummydeploymentwithdocker:latest
         
   deploy:
     needs: build
