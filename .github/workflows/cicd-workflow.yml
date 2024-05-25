@@ -6,24 +6,35 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
-      - name: Login to docker hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
-      - name: Build docker image
+      
+      - name: Login to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
         run: docker build -t easyryt/dummydeploymentwithdocker .
-      - name: Publish image to docker hub
+
+      - name: Publish image to Docker Hub
         run: docker push easyryt/dummydeploymentwithdocker:latest
         
   deploy:
     needs: build
-    runs-on: [aws-ec2]
+    runs-on: ubuntu-latest
     steps:
-      - name: Pull image from docker hub
+      - name: Pull image from Docker Hub
         run: docker pull easyryt/dummydeploymentwithdocker:latest
+
       - name: Delete old container
-        run: docker rm -f dummydeploymentwithdocker-container
-      - name: Run docker container
-        run: docker run -d -p 5000:5000 --name dummydeploymentwithdocker-container easyryt/dummydeploymentwithdocker
+        run: |
+          if [ $(docker ps -q -f name=dummydeploymentwithdocker-container) ]; then
+            docker rm -f dummydeploymentwithdocker-container
+          fi
+
+      - name: Run Docker container
+        run: docker run -d -p 5000:5000 --name dummydeploymentwithdocker-container easyryt/dummydeploymentwithdocker:latest
