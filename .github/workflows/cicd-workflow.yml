@@ -37,4 +37,4 @@ jobs:
           fi
 
       - name: Run Docker container
-        run: docker run -d -p 5000:5000 --name dummydeploymentwithdocker-container easyryt/dummydeploymentwithdocker:latest
+        run: docker run -d -p 5000:5000 --name dummydeploymentwithdocker-container easyrytdev/dummydeploymentwithdocker:latest
