@@ -18,7 +18,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t easyryt/dummydeploymentwithdocker .
+        run: docker build -t easyrytdev/dummydeploymentwithdocker .
 
       - name: Publish image to Docker Hub
         run: docker push easyrytdev/dummydeploymentwithdocker:latest
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pull image from Docker Hub
-        run: docker pull easyryt/dummydeploymentwithdocker:latest
+        run: docker pull easyrytdev/dummydeploymentwithdocker:latest
 
       - name: Delete old container
         run: |
